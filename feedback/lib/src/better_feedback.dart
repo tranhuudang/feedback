@@ -175,7 +175,6 @@ class BetterFeedback extends StatefulWidget {
   /// See [RenderRepaintBoundary](https://api.flutter.dev/flutter/rendering/RenderRepaintBoundary/toImage.html)
   /// for information on the underlying implementation.
   final double pixelRatio;
-
   /// Call `BetterFeedback.of(context)` to get an
   /// instance of [FeedbackData] on which you can call `.show()` or `.hide()`
   /// to enable or disable the feedback view.

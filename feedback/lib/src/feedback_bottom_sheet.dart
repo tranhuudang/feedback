@@ -11,7 +11,7 @@ class FeedbackBottomSheet extends StatelessWidget {
     super.key,
     required this.feedbackBuilder,
     required this.onSubmit,
-    required this.sheetProgress,
+    required this.sheetProgress
   });
 
   final FeedbackBuilder feedbackBuilder;

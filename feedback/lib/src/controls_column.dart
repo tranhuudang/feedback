@@ -49,38 +49,35 @@ class ControlsColumn extends StatelessWidget {
         direction: Axis.vertical,
         crossAxisAlignment: WrapCrossAlignment.center,
         children: <Widget>[
-          IconButton(
+          IconButton.filledTonal(
             key: const ValueKey<String>('close_controls_column'),
             icon: const Icon(Icons.close),
             onPressed: onCloseFeedback,
           ),
-          _ColumnDivider(),
-          RotatedBox(
-            quarterTurns: 1,
-            child: MaterialButton(
-              key: const ValueKey<String>('navigate_button'),
-              onPressed: isNavigatingActive
-                  ? null
-                  : () => onControlModeChanged(FeedbackMode.navigate),
-              disabledTextColor:
-                  FeedbackTheme.of(context).activeFeedbackModeColor,
-              child: Text(FeedbackLocalizations.of(context).navigate),
-            ),
-          ),
-          _ColumnDivider(),
-          RotatedBox(
-            quarterTurns: 1,
-            child: MaterialButton(
-              key: const ValueKey<String>('draw_button'),
-              minWidth: 20,
-              onPressed: isNavigatingActive
-                  ? () => onControlModeChanged(FeedbackMode.draw)
+          IconButton(
+            icon: Icon(
+              Icons.touch_app_outlined,
+              color: isNavigatingActive
+                  ? FeedbackTheme.of(context).activeFeedbackModeColor
                   : null,
-              disabledTextColor:
-                  FeedbackTheme.of(context).activeFeedbackModeColor,
-              child: Text(FeedbackLocalizations.of(context).draw),
             ),
+            onPressed: isNavigatingActive
+                ? null
+                : () => onControlModeChanged(FeedbackMode.navigate),
           ),
+          _ColumnDivider(),
+          IconButton(
+            icon: Icon(
+              Icons.edit,
+              color: !isNavigatingActive
+                  ? FeedbackTheme.of(context).activeFeedbackModeColor
+                  : null,
+            ),
+            onPressed: isNavigatingActive
+                ? () => onControlModeChanged(FeedbackMode.draw)
+                : null,
+          ),
+          _ColumnDivider(),
           IconButton(
             key: const ValueKey<String>('undo_button'),
             icon: const Icon(Icons.undo),

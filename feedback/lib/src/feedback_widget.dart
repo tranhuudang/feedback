@@ -39,7 +39,6 @@ class FeedbackWidget extends StatefulWidget {
   final double pixelRatio;
   final Widget child;
   final List<Color> drawColors;
-
   final FeedbackBuilder feedbackBuilder;
 
   @override
