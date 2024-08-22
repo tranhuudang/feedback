@@ -1,5 +1,7 @@
 // ignore_for_file: public_member_api_docs
 
+import 'dart:io';
+
 import 'package:feedback/src/feedback_mode.dart';
 import 'package:feedback/src/l18n/translation.dart';
 import 'package:feedback/src/theme/feedback_theme.dart';
@@ -37,6 +39,7 @@ class ControlsColumn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isNavigatingActive = FeedbackMode.navigate == mode;
+    final isDesktop = Platform.isWindows || Platform.isLinux || Platform.isMacOS;
     return Card(
       margin: EdgeInsets.zero,
       shape: const RoundedRectangleBorder(
@@ -45,57 +48,60 @@ class ControlsColumn extends StatelessWidget {
         ),
       ),
       clipBehavior: Clip.antiAlias,
-      child: Wrap(
-        direction: Axis.vertical,
-        crossAxisAlignment: WrapCrossAlignment.center,
-        children: <Widget>[
-          IconButton.filledTonal(
-            key: const ValueKey<String>('close_controls_column'),
-            icon: const Icon(Icons.close),
-            onPressed: onCloseFeedback,
-          ),
-          IconButton(
-            icon: Icon(
-              Icons.touch_app_outlined,
-              color: isNavigatingActive
-                  ? FeedbackTheme.of(context).activeFeedbackModeColor
+      child: Padding(
+        padding:  EdgeInsets.all(isDesktop ? 8.0 : 0),
+        child: Wrap(
+          direction: Axis.vertical,
+          crossAxisAlignment: WrapCrossAlignment.center,
+          children: <Widget>[
+            IconButton.filledTonal(
+              key: const ValueKey<String>('close_controls_column'),
+              icon: const Icon(Icons.close),
+              onPressed: onCloseFeedback,
+            ),
+            IconButton(
+              icon: Icon(
+                Icons.touch_app_outlined,
+                color: isNavigatingActive
+                    ? FeedbackTheme.of(context).activeFeedbackModeColor
+                    : null,
+              ),
+              onPressed: isNavigatingActive
+                  ? null
+                  : () => onControlModeChanged(FeedbackMode.navigate),
+            ),
+            _ColumnDivider(),
+            IconButton(
+              icon: Icon(
+                Icons.edit,
+                color: !isNavigatingActive
+                    ? FeedbackTheme.of(context).activeFeedbackModeColor
+                    : null,
+              ),
+              onPressed: isNavigatingActive
+                  ? () => onControlModeChanged(FeedbackMode.draw)
                   : null,
             ),
-            onPressed: isNavigatingActive
-                ? null
-                : () => onControlModeChanged(FeedbackMode.navigate),
-          ),
-          _ColumnDivider(),
-          IconButton(
-            icon: Icon(
-              Icons.edit,
-              color: !isNavigatingActive
-                  ? FeedbackTheme.of(context).activeFeedbackModeColor
-                  : null,
+            _ColumnDivider(),
+            IconButton(
+              key: const ValueKey<String>('undo_button'),
+              icon: const Icon(Icons.undo),
+              onPressed: isNavigatingActive ? null : onUndo,
             ),
-            onPressed: isNavigatingActive
-                ? () => onControlModeChanged(FeedbackMode.draw)
-                : null,
-          ),
-          _ColumnDivider(),
-          IconButton(
-            key: const ValueKey<String>('undo_button'),
-            icon: const Icon(Icons.undo),
-            onPressed: isNavigatingActive ? null : onUndo,
-          ),
-          IconButton(
-            key: const ValueKey<String>('clear_button'),
-            icon: const Icon(Icons.delete),
-            onPressed: isNavigatingActive ? null : onClearDrawing,
-          ),
-          for (final color in colors)
-            _ColorSelectionIconButton(
-              key: ValueKey<Color>(color),
-              color: color,
-              onPressed: isNavigatingActive ? null : onColorChanged,
-              isActive: activeColor == color,
+            IconButton(
+              key: const ValueKey<String>('clear_button'),
+              icon: const Icon(Icons.delete),
+              onPressed: isNavigatingActive ? null : onClearDrawing,
             ),
-        ],
+            for (final color in colors)
+              _ColorSelectionIconButton(
+                key: ValueKey<Color>(color),
+                color: color,
+                onPressed: isNavigatingActive ? null : onColorChanged,
+                isActive: activeColor == color,
+              ),
+          ],
+        ),
       ),
     );
   }
