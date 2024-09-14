@@ -5,6 +5,8 @@ import 'dart:io';
 import 'package:feedback/src/feedback_mode.dart';
 import 'package:feedback/src/l18n/translation.dart';
 import 'package:feedback/src/theme/feedback_theme.dart';
+import 'package:feedback/src/utilities/current_platform.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 /// This is the Widget on the right side of the app when the feedback view
@@ -39,7 +41,6 @@ class ControlsColumn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isNavigatingActive = FeedbackMode.navigate == mode;
-    final isDesktop = Platform.isWindows || Platform.isLinux || Platform.isMacOS;
     return Card(
       margin: EdgeInsets.zero,
       shape: const RoundedRectangleBorder(
@@ -49,7 +50,7 @@ class ControlsColumn extends StatelessWidget {
       ),
       clipBehavior: Clip.antiAlias,
       child: Padding(
-        padding:  EdgeInsets.all(isDesktop ? 8.0 : 0),
+        padding:  EdgeInsets.all(isDesktop || isWebDesktop ? 8.0 : 0),
         child: Wrap(
           direction: Axis.vertical,
           crossAxisAlignment: WrapCrossAlignment.center,
